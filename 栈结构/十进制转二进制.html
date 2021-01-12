@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="Stack.js"></script>
+    <script>
+        function dec2bin(decNumber, jz = 2) {
+            var stack = new Stack()
+            while (decNumber > 0) {
+                stack.push(decNumber % jz)
+                decNumber = ~~(decNumber / jz)
+            }
+            var binaryString = ''
+            while (!stack.isEmpty()) {
+                binaryString += stack.pop()
+            }
+            return binaryString
+        }
+
+        console.log(dec2bin(100))
+    </script>
+</body>
+
+</html>

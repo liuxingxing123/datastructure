@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src='DoubleLinkedList.js'></script>
+    <script>
+        var list = new DoubleLinkedList()
+
+        list.append('aaa')
+        list.append('bbb')
+        list.append('ccc')
+        list.append('ggggg')
+        list.append('testremove')
+        console.log(list.toString())
+
+        list.insert(0, 'aaa0')
+        list.insert(4, 'ccc0')
+        console.log(list.toString())
+
+        console.log(list.get(4))
+        console.log(list.indexOf('ccc0'))
+
+        console.log(list.update(4, 'aaaaaaaa'))
+        console.log(list.toString())
+
+        list.removeAt(3)
+        console.log(list.toString())
+
+        list.remove('testremove')
+        console.log(list.toString())
+        console.log(list.getHead())
+        console.log(list.getTail())
+        console.log(list.size())
+        console.log(list.isEmpty())
+    </script>
+</body>
+
+</html>

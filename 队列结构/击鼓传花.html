@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="Queue.js"></script>
+    <script>
+        /*         var queue = new Queue()
+
+                                queue.enqueue('aaa')
+                                queue.enqueue('bbb')
+                                queue.enqueue('ccc')
+                                queue.enqueue('ddd')
+                                console.log(queue)
+
+                                queue.dequeue()
+                                queue.dequeue()
+                                console.log(queue)
+
+                                console.log(queue.front())
+                                console.log(queue.isEmpty())
+                                console.log(queue.size())
+                                console.log(queue.toString()) */
+
+        function passGame(nameList, num = 3) {
+            var queue = new Queue()
+            for (var i = 0; i < nameList.length; i++) {
+                queue.enqueue(nameList[i])
+            }
+            while (queue.size() > 1) {
+                for (var i = 0; i < num - 1; i++) {
+                    queue.enqueue(queue.dequeue())
+                }
+                queue.dequeue()
+            }
+            var endName = queue.front()
+            var index = nameList.indexOf(endName)
+            return {
+                name: endName,
+                index
+            }
+        }
+        var namelist = ['lily', 'lucy', 'tom', 'lilei', 'hanmeimei']
+        console.log(passGame(namelist))
+    </script>
+</body>
+
+</html>

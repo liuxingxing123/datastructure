@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="LinkedList.js"></script>
+    <script>
+        var list = new LinkedList()
+        list.append('aaa')
+        list.append('bbb')
+        list.append('ccc')
+        console.log(list.toString())
+
+        list.insert(0, 'aaaa')
+        list.insert(3, 'dddd')
+        console.log(list.toString())
+
+        console.log(list.get(4))
+
+        console.log(list.indexOf('dddd'))
+
+        list.update(0, 'mmmm')
+        console.log(list.toString())
+
+        console.log(list.removeAt(4))
+        console.log(list.toString())
+
+        console.log(list.remove('mmmm'))
+        console.log(list.toString())
+
+        console.log(list.isEmpty())
+        console.log(list.size())
+    </script>
+</body>
+
+</html>
