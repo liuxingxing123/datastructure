@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="Set.js"></script>
+    <script>
+        var set = new Set()
+        set.add("aaa")
+        set.add("aaa")
+        set.add("bbb")
+        set.add("ccc")
+        console.log(set.values())
+
+        console.log(set.remove('aaa'))
+        console.log(set.remove('aaa'))
+
+        console.log(set.has('ccc'))
+
+        console.log(set.size())
+        set.clear()
+        console.log(set.size())
+    </script>
+</body>
+
+</html>
