@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<div>
+    <h1>标题</h1>
+    <p>可复制的内容</p>
+</div>
+
+<body>
+    <script src="Dictionary.js"></script>
+    <script>
+        const dictionary = new Dictionary()
+        dictionary.set('Gandalf', 'gandalf@email.com')
+        dictionary.set('John', 'johnsnow@email.com')
+        dictionary.set('Tyrion', 'tyrion@email.com')
+
+        console.log(dictionary)
+        console.log(dictionary.keys)
+        console.log(dictionary.values)
+        console.log(dictionary.items)
+        document.body.oncopy = function(event) {
+            console.log(document.getSelection().toString())
+            const msg = `
+            标题:${document.title}
+            链接:${location.href}
+            `
+            event.clipboardData.setData('text/plain', `
+            ${document.getSelection().toString()}
+            ${msg}
+            `)
+            event.preventDefault();
+        }
+    </script>
+</body>
+
+</html>
