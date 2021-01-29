@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function Axios(config) {
+            this.config = config
+            this.interceptors = {
+                request: new InterceptorManager(),
+                response: new InterceptorManager(),
+            }
+        }
+
+        Axios.prototype.request = function(config) {
+            let promise = Promise.resolve(config)
+            const chains = [dispatchRequest, undefined]
+            this.interceptors.request.handlers.forEach(item => {
+                chains.unshift(item.fulfilled, item.rejected)
+            })
+
+            this.interceptors.response.handlers.forEach(item => {
+                    chains.push(item.fulfilled, item.rejected)
+                })
+                //console.log(chains)
+            while (chains.length) {
+                promise = promise.then(chains.shift(), chains.shift())
+            }
+            return promise
+        }
+
+        function dispatchRequest(config) {
+            return new Promise((resolve, reject) => {
+                resolve({
+                    status: 200,
+                    statusText: 'OK'
+                })
+            })
+        }
+        let context = new Axios({})
+        let axios = Axios.prototype.request.bind(context)
+        Object.keys(context).forEach(key => {
+            axios[key] = context[key]
+        })
+
+        function InterceptorManager() {
+            this.handlers = []
+        }
+        InterceptorManager.prototype.use = function(fulfilled, rejected) {
+            this.handlers.push({
+                fulfilled,
+                rejected
+            })
+        }
+        axios.interceptors.request.use(function one(config) {
+            console.log("请求拦截器成功1")
+                //throw "参数错误"
+            config.params = {
+                a: 100
+            }
+            return config
+        }, function one(error) {
+            console.log("请求拦截器失败1")
+            return Promise.reject(error)
+        })
+
+        axios.interceptors.request.use(function two(config) {
+            console.log("请求拦截器成功2")
+                //throw "参数错误"
+            config.timeout = 2000
+            return config
+        }, function two(error) {
+            console.log("请求拦截器失败2")
+            return Promise.reject(error)
+        })
+        axios.interceptors.response.use(function one(response) {
+            console.log("响应拦截器成功1")
+            return response
+        }, function one(error) {
+            console.log("响应拦截器失败1")
+            return Promise.reject(error)
+        })
+        axios.interceptors.response.use(function two(response) {
+                console.log("响应拦截器成功2")
+                return response
+            }, function two(error) {
+                console.log("响应拦截器失败2")
+                return Promise.reject(error)
+            })
+            //console.dir(axios)
+        axios({
+            method: 'GET',
+            url: 'http://localhost:3000/posts'
+        }).then(res => {
+            console.log(res)
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="page-header">axios取消请求</h2>
+        <button class="btn btn-primary">发送请求</button>
+        <button class="btn btn-warning">取消请求</button>
+    </div>
+</body>
+<script>
+    function Axios(config) {
+        this.config = config
+    }
+    Axios.prototype.request = function(config) {
+        return dispatchRequest(config)
+    }
+
+    function dispatchRequest(config) {
+        return xhrAdapter(config)
+    }
+
+    function xhrAdapter(config) {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest()
+            xhr.open(config.method, config.url)
+            xhr.send()
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        resolve({
+                            status: xhr.status,
+                            statusText: xhr.statusText
+                        })
+                    } else {
+                        reject(new Error("请求失败"))
+                    }
+                }
+            }
+            if (config.cancelToken) {
+                config.cancelToken.promise.then(value => {
+                    xhr.abort()
+                    reject(new Error('请求已经被取消'))
+                })
+            }
+        })
+    }
+    const context = new Axios({})
+    const axios = Axios.prototype.request.bind(context)
+
+    function CancelToken(executor) {
+        var resolvePromise;
+        this.promise = new Promise((resolve) => {
+            resolvePromise = resolve
+        })
+        executor(function() {
+            resolvePromise()
+        })
+    }
+    const btns = document.querySelectorAll('button')
+    let cancel = null
+    btns[0].onclick = function() {
+        if (cancel !== null) {
+            cancel() //取消上一次的请求
+        }
+        axios({
+            method: 'GET',
+            url: 'http://localhost:3000/posts',
+            cancelToken: new CancelToken(function(c) {
+                cancel = c
+            })
+        }).then(res => {
+            console.log(res)
+            cancel = null
+        })
+    }
+    btns[1].onclick = function() {
+        cancel()
+    }
+</script>
+
+</html>
